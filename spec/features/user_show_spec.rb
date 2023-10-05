@@ -11,7 +11,7 @@ RSpec.describe 'users#show page', type: :feature do
 
     @user2 = User.create(
       name: 'Halai',
-      photo: 'https://unsplash.com/photos/F_-0BxGuVvo',
+      photo: 'https://unsplash.com/photos/igX2deuD9lc',
       bio: 'Software Engineer.',
       posts_counter: 0
     )
@@ -51,6 +51,32 @@ RSpec.describe 'users#show page', type: :feature do
       @user1.recent_posts.each do |post|
         expect(page).to have_content(post.text)
       end
+    end
+
+    it 'can see a button to view all user posts' do
+      expect(page).to have_selector('button', text: 'See all posts')
+    end
+  end
+
+  describe 'show page' do
+    before(:each) do
+      visit user_path(@user2)
+    end
+
+    it 'can see the user profile picture.' do
+      expect(page).to have_css("img[src='#{@user2.photo}']")
+    end
+
+    it 'can see the user username' do
+      expect(page).to have_content(@user2.name.to_s)
+    end
+
+    it 'I can see the number of posts the user has written.' do
+      expect(page).to have_content("Number of posts: #{@user2.posts_counter}")
+    end
+
+    it 'I can see the user bio.' do
+      expect(page).to have_content(@user2.bio.to_s)
     end
 
     it 'can see a button to view all user posts' do
