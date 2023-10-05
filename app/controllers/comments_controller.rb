@@ -1,4 +1,14 @@
 class CommentsController < ApplicationController
+  
+  def index
+    @post = Post.find(params[:post_id])
+    @comments = @post.comments
+    respond_to do |format|
+      format.html { render 'index' }
+      format.json { render json: @comments }
+    end
+  end
+  
   def new
     @comment = Comment.new
   end
@@ -9,11 +19,16 @@ class CommentsController < ApplicationController
     @comment.user = current_user
 
     if @comment.save
-      redirect_to user_post_path(user_id: @post.author_id, post_id: @post.id, id: @post.id)
+      respond_to do |format|
+        format.html { redirect_to user_post_path(user_id: @post.author_id, post_id: @post.id, id: @post.id) }
+        format.json { render json: { message: 'Comment Added' }, status: :created }
+      end
       @post.update(comments_counter: @post.comments.count)
     else
-      redirect_to new_user_post_comment_path(user_id: @post.author_id, post_id: @post.id)
-    end
+      respond_to do |format|
+        format.html { redirect_to new_user_post_comment_path(user_id: @post.author_id, post_id: @post.id) }
+        format.json { render json: { message: 'Comment Not Add' }, status: :unprocessable_entity }
+      end
   end
 
   def destroy
