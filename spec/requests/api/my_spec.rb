@@ -1,4 +1,3 @@
-require 'swagger_helper'
-
-RSpec.describe 'api/my', type: :request do
-end
+# require 'swagger_helper'
+# RSpec.describe 'api/my', type: :request do
+# end
