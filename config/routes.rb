@@ -8,8 +8,8 @@ Rails.application.routes.draw do
   post '/users/:user_id/posts', to: 'posts#create', as: 'create_post'
   get '/users/:user_id/posts/:id', to: 'posts#show', as: 'user_post'
   resources :users, only: [] do
-  resources :posts, only: [] do
-    resources :comments, only: [:new, :create]
+  resources :posts, only: [:destroy] do
+    resources :comments, only: [:new, :create, :destroy]
     resources :likes, only: [:new, :create]
   end
 end
