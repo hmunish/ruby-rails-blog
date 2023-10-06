@@ -1,5 +1,6 @@
 class CommentsController < ApplicationController
-  
+  load_and_authorize_resource
+
   def index
     @post = Post.find(params[:post_id])
     @comments = @post.comments
@@ -8,8 +9,6 @@ class CommentsController < ApplicationController
       format.json { render json: @comments }
     end
   end
-  
-  load_and_authorize_resource
 
   def new
     @comment = Comment.new
@@ -31,6 +30,7 @@ class CommentsController < ApplicationController
         format.html { redirect_to new_user_post_comment_path(user_id: @post.author_id, post_id: @post.id) }
         format.json { render json: { message: 'Comment Not Add' }, status: :unprocessable_entity }
       end
+    end
   end
 
   def destroy
